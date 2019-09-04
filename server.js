@@ -1,8 +1,15 @@
+require('dotenv').config();
 const express = require('express');
 const helmet = require('helmet');
 const cors = require('cors');
+const mongoose = require('mongoose');
 
 //const remindersRouter = require('./reminders/remindersRouter');
+
+mongoose
+  .connect(process.env.DB_URL, { useNewUrlParser: true })
+  .then(mongo => console.log('Connected to DB'))
+  .catch(err => console.log('Error connecting to DB', err))
 
 const server = express();
 const port = process.env.PORT || 5000;
