@@ -4,7 +4,7 @@ const helmet = require('helmet');
 const cors = require('cors');
 const mongoose = require('mongoose');
 
-//const remindersRouter = require('./reminders/remindersRouter');
+const userRoutes = require('./users/userRoutes');
 
 mongoose
   .connect(process.env.DB_URL, { useNewUrlParser: true })
@@ -22,7 +22,7 @@ server.get('/', (req, res) => {
   res.json({Message: `Server listening on port ${port}`});
 })
 
-//server.use('/reminders', remindersRouter);
+server.use('/users', userRoutes);
 
 server.listen(port, err => {
   if (err) console.log(err);
