@@ -36,6 +36,8 @@ router.post('/signin', (req, res) => {
         }
         const token = jwt.sign(payload, process.env.SECRET);
         res.json({ token });
+      } else {
+        res.status(500).json({ error: 'There was an error processing the password' });
       }
     })
   })
