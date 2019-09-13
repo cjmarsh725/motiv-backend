@@ -7,6 +7,7 @@ const mongoose = require('mongoose');
 const userRoutes = require('./users/userRoutes');
 const reminderRoutes = require('./reminders/reminderRoutes');
 
+mongoose.set('useCreateIndex', true);
 mongoose
   .connect(process.env.DB_URL, { useNewUrlParser: true })
   .then(mongo => console.log('Connected to DB'))
