@@ -5,6 +5,7 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 
 const userRoutes = require('./users/userRoutes');
+const reminderRoutes = require('./reminders/reminderRoutes');
 
 mongoose
   .connect(process.env.DB_URL, { useNewUrlParser: true })
@@ -23,6 +24,7 @@ server.get('/', (req, res) => {
 })
 
 server.use('/users', userRoutes);
+server.use('/reminders', reminderRoutes);
 
 server.listen(port, err => {
   if (err) console.log(err);

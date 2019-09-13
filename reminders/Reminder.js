@@ -7,6 +7,7 @@ const reminderSchema = new mongoose.Schema({
   },
   userid: {
     type: String,
+    required: true
   }
 });
 
