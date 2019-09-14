@@ -5,6 +5,10 @@ const reminderSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  order: {
+    type: Number,
+    required: true
+  },
   userid: {
     type: String,
     required: true
