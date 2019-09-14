@@ -5,7 +5,7 @@ const reminderSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  order: {
+  id: {
     type: Number,
     required: true
   },

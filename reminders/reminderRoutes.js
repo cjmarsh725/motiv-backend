@@ -18,8 +18,8 @@ router.post('/add', authenticate, (req, res) => {
     const { content } = req.body;
     const { id } = req.decoded;
     Reminder.find({ userid: id }, null, { sort: { order: 'desc' }}).then(reminders => {
-      const order = reminders.length === 0 ? 0 : reminders[0].order + 1;
-      const reminderData = { content: content, order: order, userid: id };
+      const id = reminders.length === 0 ? 0 : reminders[0].id + 1;
+      const reminderData = { content: content, id: id, userid: id };
       const reminder = new Reminder(reminderData);
       reminder.save()
         .then(reminder => res.status(201).json(reminder))
