@@ -49,11 +49,12 @@ router.post('/move', authenticate, (req, res) => {
 
 router.post('/delete', authenticate, (req, res) => {
   if (req.decoded) {
-    // const { id } = req.body;
-    // const { userid } = req.decoded;
-    // Reminder.find({ userid: id, $or: [{id: movedTo},{id: movedFrom}] }).then(reminders => {
-    //   res.json({ msg: 'Move successfully completed' });
-    // }).catch(err => res.status(500).json(err));
+    const { id } = req.body;
+    const { userid } = req.decoded;
+    Reminder.findOneAndDelete({ userid, id }).then(reminder => {
+      if (reminder) res.json({ msg: 'Reminder deleted' });
+      else res.status(422).json({ msg: 'Invalid id'});
+    }).catch(err => res.status(500).json(err));
   } else {
     res.status(422).json({ msg: 'Invalid authorization' });
   }
