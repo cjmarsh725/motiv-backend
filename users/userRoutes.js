@@ -32,7 +32,7 @@ router.post('/signin', (req, res) => {
       if (hashMatch) {
         const payload = {
           username: user.username,
-          id: user._id
+          userid: user._id
         }
         const token = jwt.sign(payload, process.env.SECRET);
         res.json({ token });
