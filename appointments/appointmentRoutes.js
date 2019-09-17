@@ -24,12 +24,13 @@ router.get('/', authenticate, (req, res) => {
 router.post('/add', authenticate, (req, res) => {
   if (req.decoded) {
     const { label, date } = req.body;
+    const { userid } = req.decoded;
     if (!label || !date) {
       res.status(422).json({ msg: 'Must include label and date fields' });
       return;
     }
-    const appointmentData = { label, date, userid: req.decoded.userid };
-    const appointment = new appointment(appointmentData);
+    const appointmentData = { label, date, userid };
+    const appointment = new Appointment(appointmentData);
     appointment.save()
       .then(appointment => res.status(201).json(appointment))
       .catch(err => res.status(500).json(err));
