@@ -29,6 +29,11 @@ router.post('/add', authenticate, (req, res) => {
       res.status(422).json({ msg: 'Must include label and date fields' });
       return;
     }
+    const regex = /[0-9]+-[0-9]+-[0-9]+\s[0-9]+:[0-9]+\s[AP]M/;
+    if (!regex.test(date) || !moment(date, 'MM-DD-YYYY h:mm A').isValid()) {
+      res.status(422).json({ msg: 'Invalid date' });
+      return;
+    }
     const appointmentData = { label, date, userid };
     const appointment = new Appointment(appointmentData);
     appointment.save()
