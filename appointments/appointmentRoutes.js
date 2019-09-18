@@ -44,4 +44,20 @@ router.post('/add', authenticate, (req, res) => {
   }
 })
 
+router.post('/delete', authenticate, (req, res) => {
+  if (req.decoded) {
+    const { userid } = req.decoded;
+    const { ids } = req.body;
+    if (!Array.isArray(ids)) {
+      res.status(422).json({ msg: 'Must include array of ids to be deleted' });
+      return;
+    }
+    Appointment.deleteMany({ userid, _id: { $in: ids }})
+      .then(appointments => res.json({ msg: ids.length + ' appointments deleted' }))
+      .catch(err => res.status(500).json(err));
+  } else {
+    res.status(422).json({ msg: 'Invalid authorization'});
+  }
+})
+
 module.exports = router;
