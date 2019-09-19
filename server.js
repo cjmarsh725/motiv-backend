@@ -7,6 +7,7 @@ const mongoose = require('mongoose');
 const userRoutes = require('./users/userRoutes');
 const reminderRoutes = require('./reminders/reminderRoutes');
 const appointmentRoutes = require('./appointments/appointmentRoutes');
+const fileRoutes = require('./files/fileRoutes');
 
 mongoose.set('useCreateIndex', true);
 mongoose
@@ -28,6 +29,7 @@ server.get('/', (req, res) => {
 server.use('/users', userRoutes);
 server.use('/reminders', reminderRoutes);
 server.use('/appointments', appointmentRoutes);
+server.use('/files', fileRoutes);
 
 server.listen(port, err => {
   if (err) console.log(err);
