@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
+const { authenticate } = require('../utils/authenticate');
 const User = require('./User');
 
 router.post('/signup', (req, res) => {
@@ -41,6 +42,17 @@ router.post('/signin', (req, res) => {
       }
     })
   })
+})
+
+router.post('/delete', authenticate, (req, res) => {
+  if (req.decoded) {
+    const { userid } = req.decoded;
+    User.findOneAndDelete({ _id: userid })
+      .then(user => res.json({ msg: 'User deleted' }))
+      .catch(err => res.status(500).json(err));
+  } else {
+    res.status(422).json({ msg: 'Invalid authorization' });
+  }
 })
 
 module.exports = router;
