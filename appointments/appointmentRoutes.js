@@ -60,4 +60,15 @@ router.post('/delete', authenticate, (req, res) => {
   }
 })
 
+router.post('/deleteall', authenticate, (req, res) => {
+  if (req.decoded) {
+    const { userid } = req.decoded;
+    Appointment.deleteMany({ userid })
+      .then(appointments => res.json({ msg: 'All appointments deleted' }))
+      .catch(err => res.status(500).json(err));
+  } else {
+    res.status(422).json({ msg: 'Invalid authorization'});
+  }
+})
+
 module.exports = router;
