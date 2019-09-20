@@ -38,4 +38,15 @@ router.post('/update', authenticate, (req, res) => {
   }
 })
 
+router.post('/delete', authenticate, (req, res) => {
+  if (req.decoded) {
+    const { userid } = req.decoded;
+    File.findOneAndDelete({ userid })
+      .then(file => res.json({ msg: 'File structure deleted' }))
+      .catch(err => res.status(500).json(err));
+  } else {
+    res.status(422).json({ msg: 'Invalid authorization' });
+  }
+})
+
 module.exports = router;
