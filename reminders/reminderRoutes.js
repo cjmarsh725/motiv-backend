@@ -30,8 +30,9 @@ router.post('/add', authenticate, (req, res) => {
     const { userid } = req.decoded;
     // All the reminders for the user are sorted by order to get the next highest order value
     Reminder.find({ userid }, null, { sort: { order: 'desc' }}).then(reminders => {
-      // Sets reminderid to 0 or one higher than the previously highest order value
+      // Sorts the reminders by id to make the first reminder the one with the highest id
       reminders.sort((a, b) => b.id - a.id);
+      // Sets reminderid to 0 or one higher than the previously highest order value
       const id = reminders.length === 0 ? 0 : reminders[0].id + 1;
       const reminderData = { content, id, userid };
       const reminder = new Reminder(reminderData);
