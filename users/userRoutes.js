@@ -16,7 +16,16 @@ router.post('/signup', (req, res) => {
   const userData = { username, password };
   const user = new User(userData);
   user.save()
-    .then(user => res.status(201).json(user))
+    .then(user => {
+      // Payload includes mongo _id of the user for use in other routes
+      const payload = {
+        username: user.username,
+        userid: user._id
+      }
+      // The token is constructed from the secret and payload then sent in the response
+      const token = jwt.sign(payload, process.env.SECRET);
+      res.status(201).json({ token });
+    })
     .catch(err => res.status(500).json(err));
 })
 
