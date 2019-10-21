@@ -15,7 +15,10 @@ router.get('/', authenticate, (req, res) => {
   if (req.decoded) {
     // Finds all documents with the given userid and returns them in the response
     Reminder.find({ userid: req.decoded.userid })
-      .then(reminders => res.json(reminders))
+      .then(reminders => {
+        reminders.sort((a, b) => b.id - a.id);
+        res.json(reminders);
+      })
       .catch(err => res.status(500).json(err));
   } else {
     res.status(422).json({ msg: 'Invalid authorization'});
