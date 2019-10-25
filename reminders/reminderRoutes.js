@@ -63,9 +63,11 @@ router.post('/move', authenticate, (req, res) => {
       reminders[0].content = reminders[1].content;
       reminders[1].content = temp;
       // Saves both reminders to the db
-      reminders[0].save();
-      reminders[1].save();
-      res.json({ msg: 'Move successfully completed' });
+      reminders[0].save().then(doc => {
+        reminders[1].save().then(doc2 => {
+          res.json({ msg: 'Move successfully completed' });
+        });
+      });
     }).catch(err => res.status(500).json(err));
   } else {
     res.status(422).json({ msg: 'Invalid authorization' });
