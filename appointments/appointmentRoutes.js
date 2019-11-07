@@ -47,12 +47,21 @@ router.post('/add', authenticate, (req, res) => {
       res.status(422).json({ msg: 'Invalid date' });
       return;
     }
-    // Creates a new appointment and saves it to the db
-    const appointmentData = { label, date, userid };
-    const appointment = new Appointment(appointmentData);
-    appointment.save()
-      .then(appointment => res.status(201).json(appointment))
-      .catch(err => res.status(500).json(err));
+    
+    // All the appointments for the user are sorted by order to get the next highest order value
+    Appointment.find({ userid }, null, { sort: { order: 'desc' }}).then(appointments => {
+      // Sorts the appointments by id to make the first appointment the one with the highest id
+      appointments.sort((a, b) => b.id - a.id);
+      // Sets appointmentid to 0 or one higher than the previously highest order value
+      const id = appointments.length === 0 ? 0 : appointments[0].id + 1;
+      const appointmentData = { label, date, id, userid };
+      const appointment = new Appointment(appointmentData);
+      // Saves the new appointment to the db
+      appointment.save()
+        .then(appointment => res.status(201).json(appointment))
+        .catch(err => res.status(500).json(err));
+    }).catch(err => res.status(500).json(err));
+    
   } else {
     res.status(422).json({ msg: 'Invalid authorization'});
   }
