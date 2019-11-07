@@ -12,6 +12,11 @@ const appointmentSchema = new mongoose.Schema({
   userid: {
     type: String,
     required: true
+  },
+  id: {
+    type: String,
+    required: true,
+    unique: true
   }
 });
 
